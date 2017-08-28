@@ -3,9 +3,13 @@ RELVER=ft
 
 all:	build push
 
-build:
+build:	jnlp ruby-base ruby-runtime
+
+jnlp:
 	docker build docker-jnlp-slave -t ${RELENG}/docker-jnlp-slave
+ruby-base:
 	docker build jenkins-ruby-slave-base -t ${RELENG}/jenkins-ruby-slave-base
+ruby-runtime:
 	docker build jenkins-ruby-slave -t ${RELENG}/jenkins-ruby-slave:${RELVER}
 
 push:
