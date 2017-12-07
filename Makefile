@@ -1,5 +1,5 @@
 RELENG=yebyen
-RELVER=ft
+RELVER=v8
 
 all:	build push
 
