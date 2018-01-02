@@ -1,5 +1,5 @@
 RELENG=yebyen
-RELVER=v8
+RELVER=v8-2.3.5
 
 all:	build push
 
@@ -10,7 +10,7 @@ slave:
 jnlp:
 	docker build docker-jnlp-slave -t ${RELENG}/docker-jnlp-slave
 ruby-base:
-	docker build jenkins-ruby-slave-base -t ${RELENG}/jenkins-ruby-slave-base
+	docker build jenkins-ruby-slave-base -t ${RELENG}/jenkins-ruby-slave-base:2.3.5
 ruby-runtime:
 	docker build jenkins-ruby-slave -t ${RELENG}/jenkins-ruby-slave:${RELVER}
 
