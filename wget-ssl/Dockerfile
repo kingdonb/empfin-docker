@@ -1,4 +1,4 @@
-FROM ndoit/ubuntu:16.04
+FROM kingdonb/buildpack:ruby
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		ca-certificates \

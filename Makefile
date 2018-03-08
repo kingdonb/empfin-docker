@@ -5,10 +5,12 @@ UBUNTU_VERSION=16.04
 
 all:	build push
 
-build:	upstream wget ruby bundler	#######	rubygems
+build:	upstream buildpack wget ruby bundler	#######	rubygems
 
 upstream:
 	docker pull ndoit/ubuntu:${UBUNTU_VERSION}
+buildpack:
+	docker build buildpack-ruby -t ${RELENG}/buildpack:ruby
 wget:
 	docker build wget-ssl -t ${RELENG}/wget:${UBUNTU_VERSION}
 	docker tag ${RELENG}/wget:${UBUNTU_VERSION} ${RELENG}/wget:latest
@@ -21,6 +23,8 @@ bundler:
 # 	docker build ruby-gems -t ${RELENG}/ruby-gems:latest
 
 push:
+	docker push ${RELENG}/buildpack:ruby
+	docker push ${RELENG}/wget:${UBUNTU_VERSION}
 	docker push ${RELENG}/ruby:${RELVER}
 	docker push ${RELENG}/ruby:latest
 	docker push ${RELENG}/ruby-bundler:latest
