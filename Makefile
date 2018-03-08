@@ -1,21 +1,24 @@
-RELENG=yebyen
-RELVER=v8-2.3.5
+RELENG=kingdonb
+RELVER=2.3.5
+
+UBUNTU_VERSION=16.04
 
 all:	build push
 
-build:	slave jnlp ruby-base ruby-runtime
+build:	upstream ruby bundler	#######	rubygems
 
-slave:
-	docker build docker-slave -t ${RELENG}/docker-slave
-jnlp:
-	docker build docker-jnlp-slave -t ${RELENG}/docker-jnlp-slave
-ruby-base:
-	docker build jenkins-ruby-slave-base -t ${RELENG}/jenkins-ruby-slave-base:2.3.5
-ruby-runtime:
-	docker build jenkins-ruby-slave -t ${RELENG}/jenkins-ruby-slave:${RELVER}
+upstream:
+	docker pull ndoit/ubuntu:${UBUNTU_VERSION}
+ruby:
+	docker build ruby-${RELVER} -t ${RELENG}/ruby:${RELVER}
+	docker tag ${RELENG}/ruby:${RELVER} ${RELENG}/ruby:latest
+bundler:
+	docker build ruby-bundler -t ${RELENG}/ruby-bundler:latest
+# gems:
+# 	docker build ruby-gems -t ${RELENG}/ruby-gems:latest
 
 push:
-	docker push ${RELENG}/docker-slave
-	docker push ${RELENG}/docker-jnlp-slave
-	docker push ${RELENG}/jenkins-ruby-slave-base
-	docker push ${RELENG}/jenkins-ruby-slave:${RELVER}
+	docker push ${RELENG}/ruby:${RELVER}
+	docker push ${RELENG}/ruby:latest
+	docker push ${RELENG}/ruby-bundler:latest
+#	docker push ${RELENG}/ruby-gems:latest
