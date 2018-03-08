@@ -3,7 +3,7 @@ FROM kingdonb/bundler:latest
 RUN set -ex; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		vim ; \
+		vim tzdata; \
 	rm -rf /var/lib/apt/lists/*
 
 RUN rm -f /usr/local/bundler/bin/bundler \
@@ -21,5 +21,6 @@ ENV BUNDLE_PATH="$GEM_HOME" \
         BUNDLE_SILENCE_ROOT_WARNING=1 \
         BUNDLE_APP_CONFIG="$GEM_HOME"
 ENV PATH $BUNDLE_BIN:$PATH
+ENV TZ America/New_York
 
 CMD [ "rails", "c" ]
