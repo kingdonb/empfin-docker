@@ -14,4 +14,8 @@ ENV PATH $BUNDLE_BIN:$PATH
 RUN mkdir -p "$GEM_HOME" "$BUNDLE_BIN" \
 	&& chmod 777 "$GEM_HOME" "$BUNDLE_BIN"
 
+COPY Gemfile /app/
+WORKDIR /app
+RUN bundle install
+
 CMD [ "irb" ]
