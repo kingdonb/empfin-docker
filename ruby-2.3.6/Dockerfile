@@ -11,7 +11,6 @@ ENV RUBY_MAJOR 2.3
 ENV RUBY_VERSION 2.3.6
 ENV RUBY_DOWNLOAD_SHA256 e0d969ac22d4a403c1204868bb9c0d068aa35045bb3934cf50b17b7f66059f56
 ENV RUBYGEMS_VERSION 2.7.6
-ENV BUNDLER_VERSION 1.16.1
 
 # some of ruby's build scripts are written in ruby
 #   we purge system ruby later to make sure our final image uses what we just built
@@ -60,19 +59,6 @@ RUN set -ex \
 	&& cd / \
 	&& rm -r /usr/src/ruby \
 	\
-	&& gem update --system "$RUBYGEMS_VERSION" \
-	&& gem install bundler --version "$BUNDLER_VERSION" --force \
-	&& rm -r /root/.gem/
-
-# install things globally, for great justice
-# and don't create ".bundle" in all our apps
-ENV GEM_HOME /usr/local/bundle
-ENV BUNDLE_PATH="$GEM_HOME" \
-	BUNDLE_BIN="$GEM_HOME/bin" \
-	BUNDLE_SILENCE_ROOT_WARNING=1 \
-	BUNDLE_APP_CONFIG="$GEM_HOME"
-ENV PATH $BUNDLE_BIN:$PATH
-RUN mkdir -p "$GEM_HOME" "$BUNDLE_BIN" \
-	&& chmod 777 "$GEM_HOME" "$BUNDLE_BIN"
+	&& gem update --system "$RUBYGEMS_VERSION"
 
 CMD [ "irb" ]
