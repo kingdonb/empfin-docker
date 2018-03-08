@@ -4,6 +4,7 @@ RELVER=2.3.6
 UBUNTU_VERSION=16.04
 
 all:	build push
+fetch:	pull
 
 build:	upstream buildpack wget ruby bundler rails
 
@@ -22,6 +23,11 @@ bundler:
 rails:
 	docker build rails-vim -t ${RELENG}/rails:latest
 
+clean:
+	docker rmi kingdonb/bundler:latest kingdonb/ruby:{2.3.6,latest} \
+	  kingdonb/wget:{16.04,latest} kingdonb/buildpack:ruby \
+	  kingdonb/rails:latest
+
 push:
 	docker push ${RELENG}/buildpack:ruby
 	docker push ${RELENG}/wget:${UBUNTU_VERSION}
@@ -29,3 +35,11 @@ push:
 	docker push ${RELENG}/ruby:latest
 	docker push ${RELENG}/ruby-bundler:latest
 	docker push ${RELENG}/rails:latest
+
+pull:
+	docker pull ${RELENG}/buildpack:ruby
+	docker pull ${RELENG}/wget:${UBUNTU_VERSION}
+	docker pull ${RELENG}/ruby:${RELVER}
+	docker pull ${RELENG}/ruby:latest
+	docker pull ${RELENG}/ruby-bundler:latest
+	docker pull ${RELENG}/rails:latest
