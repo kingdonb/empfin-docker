@@ -3,7 +3,7 @@ FROM kingdonb/bundler:latest
 RUN set -ex; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		vim ; \
+		vim tzdata; \
 	rm -rf /var/lib/apt/lists/*
 
 RUN rm -f /usr/local/bundler/bin/bundler \
@@ -13,6 +13,14 @@ RUN rm -f /usr/local/bundler/bin/bundler \
 COPY Gemfile /app/
 WORKDIR /app
 RUN bundle install
-RUN yes|rails new .
+RUN yes n|rails new .
 
-CMD [ "rails c" ]
+ENV GEM_HOME /usr/local/bundle
+ENV BUNDLE_PATH="$GEM_HOME" \
+        BUNDLE_BIN="$GEM_HOME/bin" \
+        BUNDLE_SILENCE_ROOT_WARNING=1 \
+        BUNDLE_APP_CONFIG="$GEM_HOME"
+ENV PATH $BUNDLE_BIN:$PATH
+ENV TZ America/New_York
+
+CMD [ "rails", "c" ]
