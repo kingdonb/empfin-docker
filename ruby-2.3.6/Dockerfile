@@ -1,4 +1,4 @@
-FROM ndoit/ubuntu:16.04
+FROM kingdonb/wget:latest
 
 # skip installing gem documentation
 RUN mkdir -p /usr/local/etc \
