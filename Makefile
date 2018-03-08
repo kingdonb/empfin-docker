@@ -1,21 +1,45 @@
-RELENG=yebyen
-RELVER=v8
+RELENG=kingdonb
+RELVER=2.3.6
+
+UBUNTU_VERSION=16.04
 
 all:	build push
+fetch:	pull
 
-build:	slave jnlp ruby-base ruby-runtime
+build:	upstream buildpack wget ruby bundler rails
 
-slave:
-	docker build docker-slave -t ${RELENG}/docker-slave
-jnlp:
-	docker build docker-jnlp-slave -t ${RELENG}/docker-jnlp-slave
-ruby-base:
-	docker build jenkins-ruby-slave-base -t ${RELENG}/jenkins-ruby-slave-base
-ruby-runtime:
-	docker build jenkins-ruby-slave -t ${RELENG}/jenkins-ruby-slave:${RELVER}
+upstream:
+	docker pull ndoit/ubuntu:${UBUNTU_VERSION}
+buildpack:
+	docker build buildpack-ruby -t ${RELENG}/buildpack:ruby
+wget:
+	docker build wget-ssl -t ${RELENG}/wget:${UBUNTU_VERSION}
+	docker tag ${RELENG}/wget:${UBUNTU_VERSION} ${RELENG}/wget:latest
+ruby:
+	docker build ruby-${RELVER} -t ${RELENG}/ruby:${RELVER}
+	docker tag ${RELENG}/ruby:${RELVER} ${RELENG}/ruby:latest
+bundler:
+	docker build ruby-bundler -t ${RELENG}/bundler:latest
+rails:
+	docker build rails-vim -t ${RELENG}/rails:latest
+
+clean:
+	docker rmi kingdonb/bundler:latest kingdonb/ruby:{2.3.6,latest} \
+	  kingdonb/wget:{16.04,latest} kingdonb/buildpack:ruby \
+	  kingdonb/rails:latest
 
 push:
-	docker push ${RELENG}/docker-slave
-	docker push ${RELENG}/docker-jnlp-slave
-	docker push ${RELENG}/jenkins-ruby-slave-base
-	docker push ${RELENG}/jenkins-ruby-slave:${RELVER}
+	docker push ${RELENG}/buildpack:ruby
+	docker push ${RELENG}/wget:${UBUNTU_VERSION}
+	docker push ${RELENG}/ruby:${RELVER}
+	docker push ${RELENG}/ruby:latest
+	docker push ${RELENG}/ruby-bundler:latest
+	docker push ${RELENG}/rails:latest
+
+pull:
+	docker pull ${RELENG}/buildpack:ruby
+	docker pull ${RELENG}/wget:${UBUNTU_VERSION}
+	docker pull ${RELENG}/ruby:${RELVER}
+	docker pull ${RELENG}/ruby:latest
+	docker pull ${RELENG}/ruby-bundler:latest
+	docker pull ${RELENG}/rails:latest
