@@ -33,7 +33,7 @@ push:
 	docker push ${RELENG}/wget:${UBUNTU_VERSION}
 	docker push ${RELENG}/ruby:${RELVER}
 	docker push ${RELENG}/ruby:latest
-	docker push ${RELENG}/ruby-bundler:latest
+	docker push ${RELENG}/bundler:latest
 	docker push ${RELENG}/rails:latest
 
 pull:
@@ -41,5 +41,5 @@ pull:
 	docker pull ${RELENG}/wget:${UBUNTU_VERSION}
 	docker pull ${RELENG}/ruby:${RELVER}
 	docker pull ${RELENG}/ruby:latest
-	docker pull ${RELENG}/ruby-bundler:latest
+	docker pull ${RELENG}/bundler:latest
 	docker pull ${RELENG}/rails:latest

@@ -13,6 +13,13 @@ RUN rm -f /usr/local/bundler/bin/bundler \
 COPY Gemfile /app/
 WORKDIR /app
 RUN bundle install
-RUN yes|rails new .
+RUN yes n|rails new .
 
-CMD [ "rails c" ]
+ENV GEM_HOME /usr/local/bundle
+ENV BUNDLE_PATH="$GEM_HOME" \
+        BUNDLE_BIN="$GEM_HOME/bin" \
+        BUNDLE_SILENCE_ROOT_WARNING=1 \
+        BUNDLE_APP_CONFIG="$GEM_HOME"
+ENV PATH $BUNDLE_BIN:$PATH
+
+CMD [ "rails", "c" ]
