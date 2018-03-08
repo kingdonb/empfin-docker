@@ -5,7 +5,7 @@ UBUNTU_VERSION=16.04
 
 all:	build push
 
-build:	upstream buildpack wget ruby bundler	#######	rubygems
+build:	upstream buildpack wget ruby bundler rails
 
 upstream:
 	docker pull ndoit/ubuntu:${UBUNTU_VERSION}
@@ -19,8 +19,8 @@ ruby:
 	docker tag ${RELENG}/ruby:${RELVER} ${RELENG}/ruby:latest
 bundler:
 	docker build ruby-bundler -t ${RELENG}/bundler:latest
-# gems:
-# 	docker build ruby-gems -t ${RELENG}/ruby-gems:latest
+rails:
+	docker build rails-vim -t ${RELENG}/rails:latest
 
 push:
 	docker push ${RELENG}/buildpack:ruby
@@ -28,4 +28,4 @@ push:
 	docker push ${RELENG}/ruby:${RELVER}
 	docker push ${RELENG}/ruby:latest
 	docker push ${RELENG}/ruby-bundler:latest
-#	docker push ${RELENG}/ruby-gems:latest
+	docker push ${RELENG}/rails:latest
