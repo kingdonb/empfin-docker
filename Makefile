@@ -10,17 +10,17 @@ build:	upstream buildpack wget ruby bundler rails
 
 upstream:
 	docker pull ndoit/ubuntu:${UBUNTU_VERSION}
-buildpack:
+buildpack:	upstream
 	docker build buildpack-ruby -t ${RELENG}/buildpack:ruby
-wget:
+wget:	buildpack
 	docker build wget-ssl -t ${RELENG}/wget:${UBUNTU_VERSION}
 	docker tag ${RELENG}/wget:${UBUNTU_VERSION} ${RELENG}/wget:latest
-ruby:
+ruby:	wget
 	docker build ruby-${RELVER} -t ${RELENG}/ruby:${RELVER}
 	docker tag ${RELENG}/ruby:${RELVER} ${RELENG}/ruby:latest
-bundler:
+bundler:	ruby
 	docker build ruby-bundler -t ${RELENG}/bundler:latest
-rails:
+rails:	bundler
 	docker build rails-vim -t ${RELENG}/rails:latest
 
 clean:
