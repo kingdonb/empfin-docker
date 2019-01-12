@@ -1,5 +1,5 @@
 RELENG=yebyen
-RELVER=pzaforms-v8-2.3.6
+RELVER=pa-v8-2.6.0
 
 all:	build push
 
@@ -10,7 +10,7 @@ slave:
 jnlp:
 	docker build docker-jnlp-slave -t ${RELENG}/docker-jnlp-slave
 ruby-base:
-	docker build jenkins-ruby-slave-base -t ${RELENG}/jenkins-ruby-slave-base:2.3.6
+	docker build jenkins-ruby-slave-base -t ${RELENG}/jenkins-ruby-slave-base:2.6.0
 ruby-runtime:
 	docker build jenkins-ruby-slave -t ${RELENG}/jenkins-ruby-slave:${RELVER}
 
